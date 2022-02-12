@@ -127,7 +127,7 @@
     <ClCompile Include="..\src\addon\addon.cc">
       <ObjectFileName>$(IntDir)\src\addon\addon.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="C:\Users\Modail\Desktop\Graduation_Project\GM_SafeFileSplit\node_modules\_node-gyp@8.4.1@node-gyp\src\win_delay_load_hook.cc"/>
+    <ClCompile Include="C:\Users\Modail\Desktop\Graduation_Project\GM_SafeFileSplit\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
   <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets"/>

@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2022-02-08 14:28:58
- * @LastEditTime: 2022-02-08 17:44:55
- * @LastEditors: your name
+ * @LastEditTime: 2022-02-12 19:31:55
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\webpack.renderer.config.js
  */
@@ -15,6 +15,7 @@ rules.push({
 });
 
 module.exports = {
+  target: "electron-renderer",
   module: {
     rules,
   },

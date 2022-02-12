@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-08 14:28:58
- * @LastEditTime: 2022-02-08 19:32:16
+ * @LastEditTime: 2022-02-12 14:45:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\renderer.ts
@@ -34,11 +34,5 @@
  * ```
  */
 import "./index.css"
-import {clickButton} from"./proto/main/index";
-
-function start() {
-    clickButton();
-}
-start();
-
+import "./app/render"
 

@@ -1,29 +1,33 @@
 /*
  * @Author: your name
  * @Date: 2022-01-29 08:07:03
- * @LastEditTime: 2022-02-08 17:34:13
+ * @LastEditTime: 2022-02-12 22:29:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\utils\utils.ts
  */
-import  * as fs from "fs";
 import  * as path from "path";
+import * as fs from "fs";
 
 export const makedir =(file_path:string,type:string)=>{
     let dirpath:string;
     if(type==="encrypt"){
-        if(!fs.existsSync("encrypted")){
-            fs.mkdirSync("encrypted")
+        if(!fs.existsSync(path.dirname(file_path) +"/encrypted")){
+            fs.mkdirSync(path.dirname(file_path) +"/encrypted")
         }
         dirpath=path.dirname(file_path)+'/encrypted/';
     }
     else{
-        if(!fs.existsSync("decrypted")){
-            fs.mkdirSync("decrypted")
+        if(!fs.existsSync(path.dirname(file_path) +"/decrypted")){
+            fs.mkdirSync(path.dirname(file_path) +"/decrypted")
         }
         dirpath=path.dirname(file_path)+'/decrypted/';
     }
     return dirpath;
+}
+
+export const move_file=()=>{
+    
 }
 
 export const write_key_pem=(pem_val:string,dir_path:string)=>{
