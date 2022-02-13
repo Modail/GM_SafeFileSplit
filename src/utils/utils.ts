@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-29 08:07:03
- * @LastEditTime: 2022-02-12 22:29:03
+ * @LastEditTime: 2022-02-13 17:52:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\utils\utils.ts
@@ -26,8 +26,9 @@ export const makedir =(file_path:string,type:string)=>{
     return dirpath;
 }
 
-export const move_file=()=>{
-    
+export const move_file=(oldpath:string)=>{
+    let newpath:string =(path.dirname(oldpath)+"/encrypted/"+path.basename(oldpath)).replace(/\\/gi,"/");
+    fs.renameSync(oldpath,newpath);
 }
 
 export const write_key_pem=(pem_val:string,dir_path:string)=>{

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-08 14:28:58
- * @LastEditTime: 2022-02-12 20:19:49
+ * @LastEditTime: 2022-02-13 17:44:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\index.ts
@@ -34,7 +34,7 @@ const createWindow = (): void => {
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-  
+  RunApp(mainWindow);
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
@@ -45,7 +45,6 @@ const createWindow = (): void => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
-RunApp();
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
