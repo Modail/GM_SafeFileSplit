@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 10:42:27
- * @LastEditTime: 2022-02-13 17:38:37
+ * @LastEditTime: 2022-02-14 19:36:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\base\file.ts
@@ -17,7 +17,11 @@ export default class  Files {
        pub_key_str:string
     }
     constructor(str:string) {
-        this.paths=str;   
+        this.paths=str;
+        this.key_pair={
+            priv_key_str:"",
+            pub_key_str:""
+        }   
     }
     to_encrypt_file= ()=>{
         makedir(this.paths,"encrypt");
@@ -27,8 +31,8 @@ export default class  Files {
         
     }
     to_decrypt_file=(recovery_name:string,pem_path:string)=>{
-        let priv_key_str=get_key_pem(pem_path);
-        Decrypt_KEYMGMT_SM2((path.dirname(this.paths)+"/decrypted/"+recovery_name).replace(/\\/gi,"/"),priv_key_str);
+        this.key_pair.priv_key_str=get_key_pem(pem_path);
+        Decrypt_KEYMGMT_SM2((path.dirname(this.paths)+"/decrypted/"+recovery_name).replace(/\\/gi,"/"),this.key_pair.priv_key_str);
     }
     to_split_file =(threshold:number,nshares:number)=>{
             SecretShareFile(threshold,nshares,(path.dirname(this.paths)+"/encrypted/"+path.basename(this.paths)).replace(/\\/gi,"/"));
