@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-02-08 14:28:58
- * @LastEditTime: 2022-02-13 15:24:04
+ * @LastEditTime: 2022-02-14 19:58:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\index.html
@@ -14,39 +14,41 @@
 </head>
 <body>
     <div id="container">
-            <form id ="encryptForm"> 
-                <div id="Form_container">
-                    <span>请选择待加密文件:</span>
-                    <input  id="encryptFile" type="file" >
-                </div>       
-                <div id="Form_container">
-                    <span>请输入文件门限数:</span>
-                    <input id="threshold" type="number">
-                </div>
-                <div id="Form_container">
-                    <span>请输入文件分割数:</span>
-                    <input id="nshares"type="number">
-                </div>
-                  <button id="encrypt_btn" type="button" >加密</button> 
+            <div id="menu">加密分割</div>
+            <form id ="encryptForm">
+                    <div id="input_container">
+                        <span>请选择待加密文件:</span>
+                        <input  id="encryptFile" type="file" >
+                    </div>       
+                    <div id="input_container">
+                        <span>请输入文件门限数:</span>
+                        <input id="threshold" type="number">
+                    </div>
+                    <div id="input_container">
+                        <span>请输入文件分割数:</span>
+                        <input id="nshares"type="number">
+                    </div>
+                      <button id="encrypt_btn" type="button" >加密</button>    
             </form>
+            <div id="menu">解密恢复</div>
             <form id ="decryptForm">
-                <div id="Form_container">
-                    <span>请选择待恢复文件:</span>
-                    <input id ="decryptFile" type="file" multiple="multiple">
-                </div>                  
-                <div id="Form_container">
-                    <span>请选择加密时私钥:</span>
-                    <input id ="priv_pem_file" type="file" accept=".pem">
-                </div> 
-                <div id="Form_container">
-                    <span>输入设置的门限数:</span>
-                    <input id ="nshares" type="number">
-                </div> 
-                <div id="Form_container">
-                    <span>输入恢复后文件名:</span>
-                    <input id ="decryptFiles" type="text">
-                </div>
-                  <button  id="decrypt-btn" type="button" >恢复</button>
+                    <div id="input_container">
+                        <span>请选择待恢复文件:</span>
+                        <input id ="decryptFile" type="file" multiple="multiple">
+                    </div>                  
+                    <div id="input_container">
+                        <span>请选择加密时私钥:</span>
+                        <input id ="priv_pem_file" type="file" accept=".pem">
+                    </div> 
+                    <div id="input_container">
+                        <span>输入设置的门限数:</span>
+                        <input id ="nshares" type="number">
+                    </div> 
+                    <div id="input_container">
+                        <span>输入恢复后文件名:</span>
+                        <input id ="decryptFiles" type="text">
+                    </div>
+                    <button  id="decrypt-btn" type="button" >恢复</button>
             </form>
             <div id="message_placeholder">
                 <span>提示信息:</span>

@@ -17,20 +17,29 @@ input{
     align-items: center;
 }
 
+#menu{
+
+    width:40vw;
+    height: 4vh;
+    line-height: 4vh;
+    background-color: grey;
+    text-align: center;
+}
  #encryptForm,#decryptForm{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 60vw;
-    margin-bottom: 2vh;
-}
-
-#Form_container{
     width: 40vw;
+    margin-bottom: 2vh;
+    background-color: lavender;
+}
+#input_container{
+    width: 40vw;
+    margin-top: 0.5vh;
 }
 
-#encrypt_btn,#decrpt-btn{
+#encrypt_btn,#decrypt-btn{
     margin-top: 1vh;
     flex-grow:10;
 }
