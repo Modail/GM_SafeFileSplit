@@ -1,12 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2022-03-21 16:27:55
- * @LastEditTime: 2022-03-22 09:02:45
+ * @LastEditTime: 2022-04-02 20:29:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\net\net.ts
  */
 import net from "net";
+import { Socket } from "net";
 import { ServerBroadcastStream } from "./stream";
 
 export function createServer(){
@@ -28,8 +29,11 @@ export function createServer(){
     }
 }
 
-export function createConnection({host,port}:{host:string,port:number}){
-   const conn= net.createConnection({host,port});
+export function createConnection(host:string){
+    let conn:Socket;
+    for(let port =650;port<660;port++){
+         conn= net.createConnection({host,port});
+    }
    conn.once("data",(check)=>{
        if(check.toString() !=="sever"){
           conn.end();

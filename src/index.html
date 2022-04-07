@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-02-08 14:28:58
- * @LastEditTime: 2022-02-14 19:58:57
+ * @LastEditTime: 2022-04-07 23:05:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\index.html
@@ -13,7 +13,17 @@
     <title>基于国密的文件分割存储系统</title>
 </head>
 <body>
-    <div id="container">
+<div id="container">
+       <div id="main_menu">
+         <div id="id_box">id:test</div>
+         <div id="menu_box">
+             <ul>
+                <li><a href="#crypto_container">加解密</a></li>
+                 <li><a href="#dB_containner">数据库操作</a></li>
+             </ul>
+         </div>
+       </div>
+       <div id="crypto_container">
             <div id="menu">加密分割</div>
             <form id ="encryptForm">
                     <div id="input_container">
@@ -54,5 +64,10 @@
                 <span>提示信息:</span>
             </div>
     </div>
+    <div id="dB_containner">
+         <div id="table_header"> 数据库文件</div>
+         <div id="table_conntianner"></div>
+    </div>
+</div>
 </body>
 </html>

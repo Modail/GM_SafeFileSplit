@@ -1,12 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-02-13 17:56:37
+ * @LastEditTime: 2022-04-07 23:13:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
  */
-import { ipcRenderer } from "electron";
+import { ipcMain, ipcRenderer } from "electron";
 const getFormValue=function(type:string):Array<Array<string>|string|number>{
     let values=[];
     if(type==="encrypt"){
@@ -77,5 +77,80 @@ const click_decryptBtn =function(){
      })
 }
 
+const renderList=function(){
+    let fileList =<HTMLElement>document.getElementById("table_conntianner");
+    let formContainner =document.createElement("div");
+    let formContainner_class =document.createAttribute("class");
+    ipcRenderer.send("render list");
+    ipcRenderer.on("fresh data",(event,args)=>{
+         //先删除原有节点
+        let nodes =fileList.childNodes;
+        if(nodes){
+            for(let i=nodes.length-1;i>=0;i--){
+                fileList.removeChild(nodes[i]);
+             }
+        }
+        if(args.length===0){
+            formContainner_class.value="nullContainner";
+            formContainner.innerHTML='暂无数据';
+            formContainner.setAttributeNode(formContainner_class);
+            fileList.appendChild(formContainner);
+        }else{
+             formContainner_class.value="formContainner";
+             let listContianner=<HTMLElement>document.createElement("div");
+             let listUl=<HTMLUListElement>document.createElement("ul");
+             let listContianner_class=document.createAttribute("class");
+             listContianner_class.value="listContianner";
+             listContianner.setAttributeNode(listContianner_class);
+             for(let i =0 ; i<args.length; i++){
+                 let listItem=<HTMLLIElement>document.createElement("li");
+                 let listItem_name=<HTMLElement>document.createElement("div");
+                 let listItem_btnDel=<HTMLButtonElement>document.createElement("button");
+                 let listItem_btnDownload=<HTMLButtonElement>document.createElement("button");
+                 let listItem_name_class =document.createAttribute("class");
+                 let listItem_btnDel_class =document.createAttribute("class");
+                 let listItem_btnDownload_class =document.createAttribute("class");
+                 listItem_name_class.value="listItem_name";
+                 listItem_btnDel_class.value="listItem_btnDel";
+                 listItem_btnDownload_class.value="listItem_btnDownload";
+                 listItem_name.setAttributeNode(listItem_name_class);
+                 listItem_btnDel.setAttributeNode(listItem_btnDel_class);
+                 listItem_btnDownload.setAttributeNode(listItem_btnDownload_class);
+                 listItem_name.innerHTML=args[i];
+                 listItem_btnDel.innerHTML="删除";
+                 listItem_btnDownload.innerHTML="下载";
+                 listItem_btnDel.addEventListener("click",()=>baseDBop(args[i],"del"));
+                 listItem_btnDownload.addEventListener("click",()=>baseDBop(args[i],"download"));
+                 listItem.appendChild(listItem_name);
+                 listItem.appendChild(listItem_btnDel);
+                 listItem.appendChild(listItem_btnDownload);
+                 listUl.appendChild(listItem);
+             }
+             listContianner.appendChild(listUl);
+             formContainner.appendChild(listContianner);
+             fileList.appendChild(formContainner);
+        }
+    })
+}
+
+//删除、下载操作，向client端传递参数，
+const baseDBop=function(key:string,op:string){
+   if(op==="del"){
+    if(confirm("是否确认删除该文件")){
+        ipcRenderer.send("delete file",key);
+        ipcRenderer.on("delete ok",()=>renderList())
+    }
+   }else{
+       ipcRenderer.send("download file",key);
+   }
+   
+}
+
+const initPage=function(){
+    ipcRenderer.send("init page");
+    ipcRenderer.on("init ok",()=>renderList())
+}
+
 click_encryptBtn();
 click_decryptBtn();
+initPage()
