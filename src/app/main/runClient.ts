@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-28 16:01:43
- * @LastEditTime: 2022-04-07 22:27:36
+ * @LastEditTime: 2022-04-08 20:24:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\main\runClient.ts
@@ -9,7 +9,7 @@
 import { ipcMain,BrowserWindow} from "electron";
 import { createConnection } from "../../net/net";
 import Files from "../../base/file";
-import { getIPAddress } from "../../utils/utils";
+import { getIPAddress} from "../../utils/utils";
 import { levelDB } from "../../leveldb/leveldb";
 
 
@@ -73,6 +73,8 @@ export function RunClient(mainWindow:BrowserWindow){
         event.reply("delete ok")
       })
       ipcMain.on("download file",(event,args)=>{
-        
+        DB.getData(args).then((data)=>{
+          event.reply("download ready",data,args);
+        })
       })
 } 

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-29 08:07:03
- * @LastEditTime: 2022-04-02 20:21:29
+ * @LastEditTime: 2022-04-08 20:10:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\utils\utils.ts
@@ -41,7 +41,7 @@ export const get_key_pem =(pem_path:string)=>{
     return val;
 }
 
-export var getIPAddress = function () {
+export const getIPAddress = function () {
     var ipv4 = "";
     var ifaces = os.networkInterfaces();
     for (var dev in ifaces) {
@@ -59,3 +59,6 @@ export var getIPAddress = function () {
 
     return ipv4.split(".",3).join(".");
   };
+
+ 
+

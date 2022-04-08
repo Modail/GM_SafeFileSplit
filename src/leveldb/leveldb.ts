@@ -1,7 +1,10 @@
+import { rejects } from "assert";
+import { resolve } from "path";
+
 /*
  * @Author: your name
  * @Date: 2022-03-22 14:15:32
- * @LastEditTime: 2022-04-07 21:25:52
+ * @LastEditTime: 2022-04-08 21:01:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\leveldb\leveldb.ts
@@ -13,7 +16,7 @@ const leveldown =require("leveldown");
 export class levelDB{
    private db:any;
    constructor(){
-     this.db =levelup(leveldown("../../DB"));
+     this.db =levelup(leveldown("./DB"));
    }
    deleteData(key:string){
      this.db.del(key,function(err:Error){
@@ -26,10 +29,13 @@ export class levelDB{
      this.db.put(key,value);
    }
    getData(key:string){
-     this.db.get(key,function(err:Error){
-       if(err){
-         console.log(err)
-       }
+     return new Promise((resolve,rejects)=>{
+      this.db.get(key,function(err:Error,value:string|Buffer){
+        if(err){
+         rejects(err);
+        }
+       resolve(value);
+      })
      })
    }
   getKey(){

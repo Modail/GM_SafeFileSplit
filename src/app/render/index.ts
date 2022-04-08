@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-07 23:13:13
+ * @LastEditTime: 2022-04-08 20:24:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
@@ -133,6 +133,17 @@ const renderList=function(){
     })
 }
 
+const  downloadFile=function(content:any, filename:string) {
+    var a = document.createElement('a')
+    var blob = new Blob([content])
+    var url = window.URL.createObjectURL(blob)
+    a.href = url
+    a.download = filename
+    a.click()
+    window.URL.revokeObjectURL(url)
+  
+  }
+
 //删除、下载操作，向client端传递参数，
 const baseDBop=function(key:string,op:string){
    if(op==="del"){
@@ -142,6 +153,10 @@ const baseDBop=function(key:string,op:string){
     }
    }else{
        ipcRenderer.send("download file",key);
+       ipcRenderer.on("download ready",(event,...args)=>{
+           console.log(args[0],args[1])
+           downloadFile(args[0],args[1]);
+       })
    }
    
 }
