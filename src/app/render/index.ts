@@ -1,12 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-08 20:24:18
+ * @LastEditTime: 2022-04-09 17:28:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
  */
-import { ipcMain, ipcRenderer } from "electron";
+import { ipcRenderer } from "electron";
 const getFormValue=function(type:string):Array<Array<string>|string|number>{
     let values=[];
     if(type==="encrypt"){
@@ -163,9 +163,9 @@ const baseDBop=function(key:string,op:string){
 
 const initPage=function(){
     ipcRenderer.send("init page");
-    ipcRenderer.on("init ok",()=>renderList())
+    ipcRenderer.once("init ok",()=>renderList())
 }
 
 click_encryptBtn();
 click_decryptBtn();
-initPage()
+initPage();
