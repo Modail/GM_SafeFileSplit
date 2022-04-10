@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-09 17:28:07
+ * @LastEditTime: 2022-04-10 17:58:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
@@ -55,6 +55,8 @@ const click_encryptBtn =function(){
     })
     ipcRenderer.on("encrypt ok",(event,args)=>{
         message_placeholder.innerHTML=`<span>提示信息:${args}</span>`;
+        //DB.getKey()返回一个promise;
+        setTimeout(()=>renderList(),100);
     })
     ipcRenderer.on("encrypt error",(event,args)=>{
         message_placeholder.innerHTML=`<span>提示信息:${args}</span>`;
@@ -82,55 +84,56 @@ const renderList=function(){
     let formContainner =document.createElement("div");
     let formContainner_class =document.createAttribute("class");
     ipcRenderer.send("render list");
-    ipcRenderer.on("fresh data",(event,args)=>{
+    ipcRenderer.once("fresh data",(event,args)=>{ 
          //先删除原有节点
         let nodes =fileList.childNodes;
-        if(nodes){
+        if(nodes.length!==0){
             for(let i=nodes.length-1;i>=0;i--){
                 fileList.removeChild(nodes[i]);
-             }
+             }      
         }
         if(args.length===0){
-            formContainner_class.value="nullContainner";
-            formContainner.innerHTML='暂无数据';
-            formContainner.setAttributeNode(formContainner_class);
-            fileList.appendChild(formContainner);
+                formContainner_class.value="nullContainner";
+                formContainner.innerHTML='暂无数据';
+                formContainner.setAttributeNode(formContainner_class);
+                fileList.appendChild(formContainner);
         }else{
-             formContainner_class.value="formContainner";
-             let listContianner=<HTMLElement>document.createElement("div");
-             let listUl=<HTMLUListElement>document.createElement("ul");
-             let listContianner_class=document.createAttribute("class");
-             listContianner_class.value="listContianner";
-             listContianner.setAttributeNode(listContianner_class);
-             for(let i =0 ; i<args.length; i++){
-                 let listItem=<HTMLLIElement>document.createElement("li");
-                 let listItem_name=<HTMLElement>document.createElement("div");
-                 let listItem_btnDel=<HTMLButtonElement>document.createElement("button");
-                 let listItem_btnDownload=<HTMLButtonElement>document.createElement("button");
-                 let listItem_name_class =document.createAttribute("class");
-                 let listItem_btnDel_class =document.createAttribute("class");
-                 let listItem_btnDownload_class =document.createAttribute("class");
-                 listItem_name_class.value="listItem_name";
-                 listItem_btnDel_class.value="listItem_btnDel";
-                 listItem_btnDownload_class.value="listItem_btnDownload";
-                 listItem_name.setAttributeNode(listItem_name_class);
-                 listItem_btnDel.setAttributeNode(listItem_btnDel_class);
-                 listItem_btnDownload.setAttributeNode(listItem_btnDownload_class);
-                 listItem_name.innerHTML=args[i];
-                 listItem_btnDel.innerHTML="删除";
-                 listItem_btnDownload.innerHTML="下载";
-                 listItem_btnDel.addEventListener("click",()=>baseDBop(args[i],"del"));
-                 listItem_btnDownload.addEventListener("click",()=>baseDBop(args[i],"download"));
-                 listItem.appendChild(listItem_name);
-                 listItem.appendChild(listItem_btnDel);
-                 listItem.appendChild(listItem_btnDownload);
-                 listUl.appendChild(listItem);
-             }
-             listContianner.appendChild(listUl);
-             formContainner.appendChild(listContianner);
-             fileList.appendChild(formContainner);
-        }
-    })
+                 formContainner_class.value="formContainner";
+                 let listContianner=<HTMLElement>document.createElement("div");
+                 let listUl=<HTMLUListElement>document.createElement("ul");
+                 let listContianner_class=document.createAttribute("class");
+                 listContianner_class.value="listContianner";
+                 listContianner.setAttributeNode(listContianner_class);
+                 //这里逻辑有问题
+                 for(let i =0 ; i<args.length; i++){
+                     let listItem=<HTMLLIElement>document.createElement("li");
+                     let listItem_name=<HTMLElement>document.createElement("div");
+                     let listItem_btnDel=<HTMLButtonElement>document.createElement("button");
+                     let listItem_btnDownload=<HTMLButtonElement>document.createElement("button");  
+                     let listItem_name_class =document.createAttribute("class");
+                     let listItem_btnDel_class =document.createAttribute("class");
+                     let listItem_btnDownload_class =document.createAttribute("class");                 
+                     listItem_name_class.value="listItem_name";
+                     listItem_btnDel_class.value=`listItem_btnDel`;
+                     listItem_btnDownload_class.value=`listItem_btnDownload`;
+                     listItem_name.setAttributeNode(listItem_name_class);
+                     listItem_btnDel.setAttributeNode(listItem_btnDel_class);
+                     listItem_btnDownload.setAttributeNode(listItem_btnDownload_class);
+                     listItem_name.innerHTML=args[i];
+                     listItem_btnDel.innerHTML="删除";
+                     listItem_btnDownload.innerHTML="下载";
+                     listItem.appendChild(listItem_name);
+                     listItem.appendChild(listItem_btnDel);
+                     listItem.appendChild(listItem_btnDownload);
+                     listUl.appendChild(listItem);
+                     listItem_btnDel.addEventListener("click",()=>baseDBop(args[i],"del"));
+                     listItem_btnDownload.addEventListener("click",()=>baseDBop(args[i],"download"));
+                 }
+                 listContianner.appendChild(listUl);
+                 formContainner.appendChild(listContianner);
+                 fileList.appendChild(formContainner);
+            }
+        })
 }
 
 const  downloadFile=function(content:any, filename:string) {
@@ -149,12 +152,11 @@ const baseDBop=function(key:string,op:string){
    if(op==="del"){
     if(confirm("是否确认删除该文件")){
         ipcRenderer.send("delete file",key);
-        ipcRenderer.on("delete ok",()=>renderList())
+        ipcRenderer.once("delete ok",()=>renderList());
     }
    }else{
        ipcRenderer.send("download file",key);
-       ipcRenderer.on("download ready",(event,...args)=>{
-           console.log(args[0],args[1])
+       ipcRenderer.once("download ready",(event,...args)=>{
            downloadFile(args[0],args[1]);
        })
    }
@@ -165,7 +167,19 @@ const initPage=function(){
     ipcRenderer.send("init page");
     ipcRenderer.once("init ok",()=>renderList())
 }
+const initID=function(){
+    ipcRenderer.on("init id",(event,args)=>{
+       let idValue =document.getElementById("id_value");
+       idValue.innerHTML=args.address+":"+args.port;
+    })
+}
+const startApp=function(){
+    ipcRenderer.send("app start");
+    //ipcRenderer.send("client start");
+}
 
+startApp()
+initPage();
+initID();
 click_encryptBtn();
 click_decryptBtn();
-initPage();

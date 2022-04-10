@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-29 08:07:03
- * @LastEditTime: 2022-04-09 16:18:38
+ * @LastEditTime: 2022-04-10 16:44:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\utils\utils.ts
@@ -35,8 +35,7 @@ export const getIPAddress = function () {
         }
       });
     }
-
-    return ipv4.split(".",3).join(".");
+    return ipv4;
   };
 
  

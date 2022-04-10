@@ -1,18 +1,18 @@
 /*
  * @Author: your name
  * @Date: 2022-03-21 16:27:55
- * @LastEditTime: 2022-04-08 20:05:48
+ * @LastEditTime: 2022-04-10 17:57:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\net\net.ts
  */
 import net from "net";
-import * as Stream   from "stream";
 import { Socket } from "net";
 import { ServerBroadcastStream } from "./stream";
-
+import { getIPAddress } from "../utils/utils";
 export function createServer(){
     const broadcastStream =new ServerBroadcastStream();
+    const localhost =getIPAddress();
     const server =net.createServer((client)=>{
     //加校验步骤
     broadcastStream.emit("check","server");
@@ -21,8 +21,9 @@ export function createServer(){
         broadcastStream.removeSocket(client)
     })
     })
-    server.listen({ port: 655, host: "0.0.0.0" }, () => {
-        //broadcastStream.emit("startServer");
+    //这里有问题
+    server.listen({ port: 655, host: localhost}, () => {
+        broadcastStream.emit("startServer",server.address());
       });
     return {
         broadcastStream,

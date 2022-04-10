@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-28 16:01:43
- * @LastEditTime: 2022-04-09 17:08:36
+ * @LastEditTime: 2022-04-10 16:55:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\main\runClient.ts
@@ -19,10 +19,10 @@ export function RunClient(mainWindow:BrowserWindow){
        const DB=new levelDB();
        //连接局域网内的所有在线软件
        ipcMain.on("client start",()=>{
-              let ip_prefix=getIPAddress();
+              let ip_prefix=getIPAddress().split(".",3).join(".");
               for(let i=1;i<=255;i++){
                      let ip=ip_prefix+"."+i;
-                     createConnection(ip)
+                     createConnection(ip);
               }     
        })
        //获取服务器传输数据
