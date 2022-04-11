@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-10 17:58:56
+ * @LastEditTime: 2022-04-11 10:07:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
@@ -175,7 +175,7 @@ const initID=function(){
 }
 const startApp=function(){
     ipcRenderer.send("app start");
-    //ipcRenderer.send("client start");
+    ipcRenderer.send("client start");
 }
 
 startApp()

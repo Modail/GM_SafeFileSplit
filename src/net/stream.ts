@@ -3,7 +3,7 @@ import { Net } from "electron";
 /*
  * @Author: your name
  * @Date: 2022-03-21 16:28:06
- * @LastEditTime: 2022-03-22 09:03:01
+ * @LastEditTime: 2022-04-11 12:52:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\net\stream.ts
@@ -12,7 +12,7 @@ import stream from "stream";
 import { Socket } from "net";
 
 export class ServerBroadcastStream extends stream.Duplex {
-  private _sockets:Socket[]
+  _sockets:Socket[]
   constructor() {
     super();
     this._sockets = [];
