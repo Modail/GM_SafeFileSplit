@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-11 10:07:57
+ * @LastEditTime: 2022-04-15 22:31:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
@@ -167,19 +167,19 @@ const initPage=function(){
     ipcRenderer.send("init page");
     ipcRenderer.once("init ok",()=>renderList())
 }
-const initID=function(){
-    ipcRenderer.on("init id",(event,args)=>{
-       let idValue =document.getElementById("id_value");
-       idValue.innerHTML=args.address+":"+args.port;
-    })
+const initUserlist=function(){
+    
 }
 const startApp=function(){
     ipcRenderer.send("app start");
     ipcRenderer.send("client start");
 }
 
+ipcRenderer.on("receive server data",(event,args)=>{
+   console.log(args)
+})
+
 startApp()
 initPage();
-initID();
 click_encryptBtn();
 click_decryptBtn();

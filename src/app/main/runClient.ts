@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-28 16:01:43
- * @LastEditTime: 2022-04-11 10:47:15
+ * @LastEditTime: 2022-04-15 22:29:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\main\runClient.ts
@@ -13,24 +13,33 @@ import { createConnection } from "../../net/net";
 import Files from "../../base/file";
 import { getIPAddress} from "../../utils/utils";
 import { levelDB } from "../../leveldb/leveldb";
-import { Certificate } from "crypto";
+import { connect } from "http2";
 
 
 export function RunClient(mainWindow:BrowserWindow){
        const DB=new levelDB();
        //连接局域网内的所有在线软件
+       let clientWebsocket:any;
+       let redata:string;
        ipcMain.on("client start",()=>{
               // let ip_prefix=getIPAddress().split(".",3).join(".");
               // for(let i=1;i<=255;i++){
               //        let ip=ip_prefix+"."+i;
               //        createConnection(ip);
               // }   
-              createConnection(getIPAddress())  
+              createConnection(getIPAddress(),{id:"test",nikename:"user1"}).then((conn)=>{   
+                clientWebsocket=conn;
+                console.log(clientWebsocket);
+                clientWebsocket.onmessage=function(msg:any){
+                   let data=msg.data.toString()
+                   mainWindow.webContents.send("receive server data",data);
+                }
+         
+              });
        })
        //获取服务器传输数据
-      
-       ipcMain.on("clien accept data",()=>{
-
+       ipcMain.on("receive server data",(data)=>{
+          console.log(data)
        })
        // 加解密操作
        ipcMain.on("click to encrypt",(event,...args)=>{
