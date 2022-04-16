@@ -1,12 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-15 22:31:50
+ * @LastEditTime: 2022-04-16 23:13:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
  */
 import { ipcRenderer } from "electron";
+import { Duplex } from "stream";
 const getFormValue=function(type:string):Array<Array<string>|string|number>{
     let values=[];
     if(type==="encrypt"){
@@ -163,6 +164,22 @@ const baseDBop=function(key:string,op:string){
    
 }
 
+const goTosystem=function(){
+    let registerBtn=<HTMLButtonElement>document.getElementById("register_btn");
+      registerBtn.addEventListener("click",()=>{
+        let nikenameInput=<HTMLInputElement>document.getElementById("nikename_input");
+        let registerContainer=<HTMLDivElement>document.getElementById("register_container");
+        let homeContainer=<HTMLDivElement>document.getElementById("home_container");
+        let nikename=nikenameInput.value;
+        let id="test";
+        if(nikename.length!==0){
+            registerContainer.style.display="none";
+            homeContainer.style.display="block";
+            ipcRenderer.send("app start");
+            ipcRenderer.send("client start",id,nikename);
+          } 
+        })
+}
 const initPage=function(){
     ipcRenderer.send("init page");
     ipcRenderer.once("init ok",()=>renderList())
@@ -170,16 +187,12 @@ const initPage=function(){
 const initUserlist=function(){
     
 }
-const startApp=function(){
-    ipcRenderer.send("app start");
-    ipcRenderer.send("client start");
-}
 
 ipcRenderer.on("receive server data",(event,args)=>{
    console.log(args)
 })
 
-startApp()
+goTosystem();
 initPage();
 click_encryptBtn();
 click_decryptBtn();

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-21 16:27:55
- * @LastEditTime: 2022-04-15 22:04:09
+ * @LastEditTime: 2022-04-16 16:07:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\net\net.ts
@@ -34,8 +34,9 @@ export function createServer(){
                 users.push(user);
             }else{
                 let index=users.findIndex((one)=>one.id===dataJson.id);
-                if(!index){
+                if(index===-1){
                     //不存在则新建user
+                    console.log(dataJson);
                     let user=new User();
                     user.id=dataJson.id;
                     user.nikename=dataJson.nikename;
@@ -44,42 +45,16 @@ export function createServer(){
                 }
             }
             //postdata
-            if(dataJson.postlist.length){
-                users.forEach((user)=>{
-                    broadcast(dataJson,user)
-                })
-            }
-            else{
-                let userlist:string[]=[];
-                let index=users.findIndex((one)=>one.id===dataJson.id);
-                for(let i=0;i<users.length;++i){
-                    if(i!==index){
-                    userlist.push(users[i].nikename)};
-                }
-                if(userlist.length){
-                    let serverPostData=`{
-                        "userlist":${userlist},
-                        "file":[],
-                        "nikename":${users[index].nikename}
-                    }`;
-                    client.send(serverPostData)
-                }else{
-                    let serverPostData=`{
-                        "userlist":[],
-                        "file":[],
-                        "nikename":${users[index].nikename}
-                    }`;
-                    client.send(serverPostData)
-                }
-
-            }
+            broadcast(dataJson,users);
         })
           client.on("close",()=>{
               //重新渲染用户列表
               let leaveClientIndex= users.findIndex((one)=>one.socket===this);
               users.splice(leaveClientIndex,1);
-              console.log("下线")
           })
+    })
+    server.once("error",(err)=>{
+        //将错误吞掉
     })
     return server;
 }

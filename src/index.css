@@ -11,12 +11,24 @@ li{
     display: flex;
     text-align: center;
 }
-
 #container{
     box-sizing: border-box;
+}
+
+#register_container{
     display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100vw;
     height: 100vh;
+}
+#home_container{
+    display: none;
+    width: 100vw;
+    height: 100vh;
+}
+#home_maincontainer{
+    display: flex;
 }
 #main_menu{
     

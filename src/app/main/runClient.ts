@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-28 16:01:43
- * @LastEditTime: 2022-04-15 22:29:03
+ * @LastEditTime: 2022-04-16 23:06:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\main\runClient.ts
@@ -21,15 +21,14 @@ export function RunClient(mainWindow:BrowserWindow){
        //连接局域网内的所有在线软件
        let clientWebsocket:any;
        let redata:string;
-       ipcMain.on("client start",()=>{
+       ipcMain.on("client start",(event,...args)=>{
               // let ip_prefix=getIPAddress().split(".",3).join(".");
               // for(let i=1;i<=255;i++){
               //        let ip=ip_prefix+"."+i;
               //        createConnection(ip);
               // }   
-              createConnection(getIPAddress(),{id:"test",nikename:"user1"}).then((conn)=>{   
+              createConnection(getIPAddress(),{id:args[0],nikename:args[1]}).then((conn)=>{   
                 clientWebsocket=conn;
-                console.log(clientWebsocket);
                 clientWebsocket.onmessage=function(msg:any){
                    let data=msg.data.toString()
                    mainWindow.webContents.send("receive server data",data);
