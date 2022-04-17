@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-16 23:13:17
+ * @LastEditTime: 2022-04-17 21:35:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
@@ -110,13 +110,16 @@ const renderList=function(){
                      let listItem=<HTMLLIElement>document.createElement("li");
                      let listItem_name=<HTMLElement>document.createElement("div");
                      let listItem_btnDel=<HTMLButtonElement>document.createElement("button");
-                     let listItem_btnDownload=<HTMLButtonElement>document.createElement("button");  
+                     let listItem_btnDownload=<HTMLButtonElement>document.createElement("button");
+                     let listItem_class =document.createAttribute("class");  
                      let listItem_name_class =document.createAttribute("class");
                      let listItem_btnDel_class =document.createAttribute("class");
-                     let listItem_btnDownload_class =document.createAttribute("class");                 
+                     let listItem_btnDownload_class =document.createAttribute("class");
+                     listItem_class.value="list_DB";                 
                      listItem_name_class.value="listItem_name";
                      listItem_btnDel_class.value=`listItem_btnDel`;
                      listItem_btnDownload_class.value=`listItem_btnDownload`;
+                     listItem.setAttributeNode(listItem_class);
                      listItem_name.setAttributeNode(listItem_name_class);
                      listItem_btnDel.setAttributeNode(listItem_btnDel_class);
                      listItem_btnDownload.setAttributeNode(listItem_btnDownload_class);
@@ -181,6 +184,17 @@ const goTosystem=function(){
         })
 }
 const initPage=function(){
+    //初始化导航栏的li切换
+    let menuUl=<HTMLUListElement>document.querySelector(".menu_ul");
+    for(let i=0;i<menuUl.children.length;i++){
+        let li=menuUl.children[i];
+        li.addEventListener("click",()=>{
+            for(let j=0;j<menuUl.children.length;j++){
+                menuUl.children[j].className="menu_li";
+            }
+            li.className="menu_li menu_li_selected";
+            })
+    }
     ipcRenderer.send("init page");
     ipcRenderer.once("init ok",()=>renderList())
 }
