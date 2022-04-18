@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-02-08 14:28:58
- * @LastEditTime: 2022-04-18 12:44:41
+ * @LastEditTime: 2022-04-18 23:15:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\index.html
@@ -24,19 +24,16 @@
     <div id="home_container">
         <div id="home_maincontainer">
             <div id="main_menu">
-                <div id="id_box"><span>id:</span><span id="id_value"></span></div>    
+                <div id="id_box"><span>昵称:</span><span id="nikename"></span></div>    
                 <ul class="menu_ul">
                     <li class="menu_li"><a href="#crypto_container">加解密</a></li>
                     <li class="menu_li"><a href="#dB_containner">数据库操作</a></li>
-                    <li class="menu_li"><a href="#">收到的文件</a></li>
+                    <li class="menu_li"><a href="#accept_list_container">收到的文件</a></li>
                 </ul>
                 <div id="contact_people">在线联系人<span class="iconfont icon-xiangxia"></span></div>
                 <div id="contact_people_checkbox">
                      <ul class="contact_people_ul">
-                        <li><input type="checkbox" name="contact_people" value="tset"><span class="contact_nikename">user1</span></li>
-                        <li><input type="checkbox" value="tset"><span>user2</span></li>
-                     </ul>
-                    
+                     </ul>   
                 </div>
             </div>
             <div id="crypto_container">
@@ -83,6 +80,14 @@
             <div id="dB_containner">
                 <div id="table_header"> 数据库文件</div>
                 <div id="table_conntianner"></div>
+            </div>
+            <div id="accept_list_container">
+                <div id="accept_list_header">
+                    <div class="sender_label">发送者</div>
+                    <div class="filename_label">文件名</div>
+                    <div class="operation_label">操作</div>
+                </div>
+                <div id="accept_list_box"></div>
             </div>
         </div>   
     </div>

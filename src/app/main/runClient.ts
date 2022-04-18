@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-28 16:01:43
- * @LastEditTime: 2022-04-16 23:06:06
+ * @LastEditTime: 2022-04-18 23:13:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\main\runClient.ts
@@ -13,7 +13,7 @@ import { createConnection } from "../../net/net";
 import Files from "../../base/file";
 import { getIPAddress} from "../../utils/utils";
 import { levelDB } from "../../leveldb/leveldb";
-import { connect } from "http2";
+import { ClientDataJSON } from "../../net/net";
 
 
 export function RunClient(mainWindow:BrowserWindow){
@@ -30,19 +30,21 @@ export function RunClient(mainWindow:BrowserWindow){
               createConnection(getIPAddress(),{id:args[0],nikename:args[1]}).then((conn)=>{   
                 clientWebsocket=conn;
                 clientWebsocket.onmessage=function(msg:any){
-                   let data=msg.data.toString()
+                   let data=msg.data
+                   //获取服务器传输数据
                    mainWindow.webContents.send("receive server data",data);
                 }
          
               });
        })
-       //获取服务器传输数据
-       ipcMain.on("receive server data",(data)=>{
-          console.log(data)
-       })
+       
+
        // 加解密操作
        ipcMain.on("click to encrypt",(event,...args)=>{
               let file=new Files(args[0]);
+              let clientdataJSON=new ClientDataJSON();
+              let files=[];
+              let filesection;
               if(args[1]>=args[2]){
                 event.reply("encrypt error","encrypt error");
                 return;
@@ -56,17 +58,35 @@ export function RunClient(mainWindow:BrowserWindow){
                   if(i<=9){
                     datapath=datapath+`.00${i}`;
                     DB.addData(path.basename(datapath),fs.readFileSync(datapath));
+                    if(args.length>3){
+                      filesection=[path.basename(datapath),fs.readFileSync(datapath)];
+                      files.push(filesection);
+                    }
                   }
                   else if(i>9&&i<=99){
                     datapath=datapath+`.0${i}`;
                     DB.addData(path.basename(datapath),fs.readFileSync(datapath));
+                    if(args.length>3){
+                      filesection=[path.basename(datapath),fs.readFileSync(datapath)];
+                      files.push(filesection);
+                    }
                   }
                   else {
                     datapath=datapath+`.${i}`;
                     DB.addData(path.basename(datapath),fs.readFileSync(datapath));
+                    if(args.length>3){
+                      filesection=[path.basename(datapath),fs.readFileSync(datapath)];
+                      files.push(filesection);
+                    }
                   }
-                 
                 }
+                if(args.length>3){
+                  clientdataJSON.files=files;
+                  clientdataJSON.postlist=args[5];
+                  clientdataJSON.id=args[4];
+                  clientdataJSON.nikename=args[3];
+                  clientWebsocket.send(JSON.stringify(clientdataJSON)); 
+               }
                 event.reply("encrypt ok","encrypt ok");  
               }
             })

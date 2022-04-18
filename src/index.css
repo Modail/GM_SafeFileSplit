@@ -30,6 +30,7 @@ button{
     background: #1890ff;
     text-shadow: 0 -1px 0 rgba(0,0,0,.12);
     box-shadow: 0 2px #0000000b;
+    margin-left: 14px;
 }
 
 button:hover,button:focus{
@@ -144,7 +145,7 @@ a:hover{
 }
 
 
-#crypto_container,#dB_containner{
+#crypto_container,#dB_containner,#accept_list_container{
     display: none;
 }
 
@@ -204,6 +205,41 @@ a:hover{
 .listItem_name{
     width: 60vw;
 }
-.listItem_btnDel,.listItem_btnDownload{
-   margin:0 1vw;
+
+#accept_list_container:target{
+    width:80vw;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#accept_list_header{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    border-bottom:1px solid #d9d9d9;
+    
+}
+.sender_label{
+    width: 10vw;
+    border-right: 1px solid #d9d9d9;
+}
+.filename_label{
+    width: 50vw;
+    border-right: 1px solid #d9d9d9;
+}
+
+.accept_li{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.accept_li_sender{
+   width: 10vw;
+}
+
+.accept_li_filename{
+  width: 50vw;
 } 
+

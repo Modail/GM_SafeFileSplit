@@ -1,12 +1,19 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-18 14:42:15
+ * @LastEditTime: 2022-04-18 23:52:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
  */
 import { ipcRenderer } from "electron";
+
+class FilesJSON{
+    filename:string[]=[];
+    filedata:Buffer[]=[];
+    sender:string[]=[]
+}
+
 const getFormValue=function(type:string):Array<Array<string>|string|number>{
     let values=[];
     if(type==="encrypt"){
@@ -45,13 +52,31 @@ const getFormValue=function(type:string):Array<Array<string>|string|number>{
     }
     return values;
 }
+
+const getSelectUers=function(){
+    let userCheckboxs=document.getElementsByName("contact_people") as NodeListOf<HTMLInputElement>;
+    let postlist=[];
+    for(let i=0;i<userCheckboxs.length;++i){
+        if(userCheckboxs[i].checked){
+           postlist.push(userCheckboxs[i].value);
+        }
+    }
+    return postlist;
+}
 const click_encryptBtn =function(){
     let message_placeholder=<HTMLElement>document.getElementById("message_placeholder");
     let btn =<HTMLButtonElement>document.getElementById("encrypt_btn");
-    
     btn.addEventListener("click",()=>{
         let encrypt_args:Array<Array<string>|string|number> =getFormValue("encrypt");
-        ipcRenderer.send("click to encrypt",...encrypt_args);
+        let postlist=getSelectUers();
+        let nikename=document.getElementById("nikename").innerText;
+        let id=sessionStorage.getItem("id");
+        if(postlist.length){
+            ipcRenderer.send("click to encrypt",...encrypt_args,nikename,id,postlist);
+        }
+        else{
+            ipcRenderer.send("click to encrypt",...encrypt_args);
+        }
     })
     ipcRenderer.on("encrypt ok",(event,args)=>{
         message_placeholder.innerHTML=`<span>提示信息:${args}</span>`;
@@ -105,7 +130,6 @@ const renderList=function(){
                  let listContianner_class=document.createAttribute("class");
                  listContianner_class.value="listContianner";
                  listContianner.setAttributeNode(listContianner_class);
-                 //这里逻辑有问题
                  for(let i =0 ; i<args.length; i++){
                      let listItem=<HTMLLIElement>document.createElement("li");
                      let listItem_name=<HTMLElement>document.createElement("div");
@@ -174,7 +198,8 @@ const goTosystem=function(){
         let registerContainer=<HTMLDivElement>document.getElementById("register_container");
         let homeContainer=<HTMLDivElement>document.getElementById("home_container");
         let nikename=nikenameInput.value;
-        let id="test";
+        let id=(Math.random()*100000).toString();
+        sessionStorage.setItem("id",id);
         if(nikename.length!==0){
             registerContainer.style.display="none";
             homeContainer.style.display="block";
@@ -195,12 +220,23 @@ const initPage=function(){
             li.className="menu_li menu_li_selected";
             })
     }
+    //初始化session中的files数组;
+    let filesJSON=new FilesJSON();
+    sessionStorage.setItem("filesJSON",JSON.stringify(filesJSON));
+
     ipcRenderer.send("init page");
     ipcRenderer.once("init ok",()=>renderList())
 }
 const initUserlist=function(userlist:string[][]){
     //userlist:[[user.id,user.nikename]];
     let contactPeopleUl=document.querySelector(".contact_people_ul");
+        //先删除原有节点
+        let nodes =contactPeopleUl.childNodes;
+        if(nodes.length!==0){
+            for(let i=nodes.length-1;i>=0;i--){
+                contactPeopleUl.removeChild(nodes[i]);
+            }      
+        }
     userlist.forEach(user=>{
         let contactPeopleli=document.createElement("li");
         let contactPeopleCheackbox=document.createElement("input");
@@ -215,15 +251,89 @@ const initUserlist=function(userlist:string[][]){
     })
       
 }
-const renderAcceptList=function(){
+const renderAcceptList=function(file:(string|Buffer)[],senderName:string){
+      let fileName=file[0];
+      let fileBuffer=file[1];
+      let filesJSON=JSON.parse(sessionStorage.getItem("filesJSON"));
+      console.log(filesJSON)
+      //将数据存储到session中
+      if(fileName!==''&&fileBuffer!==''){
+        filesJSON.filename.push(fileName);
+        filesJSON.filedata.push(fileBuffer);
+        filesJSON.sender.push(senderName);
+        sessionStorage.setItem("filesJSON",JSON.stringify(filesJSON));
+      }
+      //渲染视图
+      let acceptList=document.getElementById("accept_list_box");
+      //先删除原有节点
+      let nodes =acceptList.childNodes;
+      if(nodes.length!==0){
+          for(let i=nodes.length-1;i>=0;i--){
+            acceptList.removeChild(nodes[i]);
+          }      
+      }
+      //根据filesJSON渲染
+      let acceptListUL=document.createElement("ul");
+      for(let i=0;i<filesJSON.sender.length;++i){
+          let acceptListLi =document.createElement("li");
+          let acceptListLiSender=document.createElement("div");
+          let acceptListLiFilename=document.createElement("div");
+          let acceptListLiOperation=document.createElement("div");
+          let acceptListLiBtn_Del=document.createElement("button");
+          let acceptListLiBtn_Download=document.createElement("button");
 
+          acceptListLi.setAttribute("class","accept_li")
+          acceptListLiSender.setAttribute("class","accept_li_sender");
+          acceptListLiFilename.setAttribute("class","accept_li_filename");
+          acceptListLiOperation.setAttribute("class","accept_li_operation");
+          
+          acceptListLiSender.innerText=filesJSON.sender[i];
+          acceptListLiFilename.innerText=filesJSON.filename[i];
+          acceptListLiBtn_Del.innerText="删除";
+          acceptListLiBtn_Download.innerText="下载";
+          
+          acceptListLiBtn_Del.addEventListener("click",()=>{
+            if(confirm("是否确认删除")){
+                let filesJSON=JSON.parse(sessionStorage.getItem("filesJSON"));
+                filesJSON.sender.splice(i,1);
+                filesJSON.filename.splice(i,1);
+                filesJSON.filedata.splice(i,1);
+                console.log(filesJSON)
+                sessionStorage.setItem("filesJSON",JSON.stringify(filesJSON));
+                renderAcceptList(["",""],"");
+            }
+          })
+          acceptListLiBtn_Download.addEventListener("click",()=>{
+            let filesJSON=JSON.parse(sessionStorage.getItem("filesJSON"));
+            downloadFile(filesJSON.filedata[i],filesJSON.filename[i]);
+          })
+
+          acceptListLiOperation.appendChild(acceptListLiBtn_Del);
+          acceptListLiOperation.appendChild(acceptListLiBtn_Download);
+          acceptListLi.appendChild(acceptListLiSender);
+          acceptListLi.appendChild(acceptListLiFilename);
+          acceptListLi.appendChild(acceptListLiOperation);
+          acceptListUL.appendChild(acceptListLi);
+      }
+      acceptList.appendChild(acceptListUL);
+      
 }
 
 ipcRenderer.on("receive server data",(event,args)=>{
     //{userlist:,file:,nikename:}
     let serverDataJSON=JSON.parse(args);
-    initUserlist(serverDataJSON.userlist);
-    renderAcceptList()
+    console.log(serverDataJSON)
+    if(serverDataJSON.userlist.length){
+        initUserlist(serverDataJSON.userlist);
+    }
+    if(!serverDataJSON.file.length){
+        let nikenameBox=document.getElementById("nikename");
+        nikenameBox.innerText=serverDataJSON.nikename;
+       
+    }
+    if(serverDataJSON.file.length){
+        renderAcceptList(serverDataJSON.file,serverDataJSON.nikename);
+    }
 })
 
 goTosystem();
