@@ -1,13 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-17 21:35:58
+ * @LastEditTime: 2022-04-18 14:42:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
  */
 import { ipcRenderer } from "electron";
-import { Duplex } from "stream";
 const getFormValue=function(type:string):Array<Array<string>|string|number>{
     let values=[];
     if(type==="encrypt"){
@@ -81,6 +80,7 @@ const click_decryptBtn =function(){
 }
 
 const renderList=function(){
+    //添加选项 render 哪个list
     let fileList =<HTMLElement>document.getElementById("table_conntianner");
     let formContainner =document.createElement("div");
     let formContainner_class =document.createAttribute("class");
@@ -198,12 +198,32 @@ const initPage=function(){
     ipcRenderer.send("init page");
     ipcRenderer.once("init ok",()=>renderList())
 }
-const initUserlist=function(){
-    
+const initUserlist=function(userlist:string[][]){
+    //userlist:[[user.id,user.nikename]];
+    let contactPeopleUl=document.querySelector(".contact_people_ul");
+    userlist.forEach(user=>{
+        let contactPeopleli=document.createElement("li");
+        let contactPeopleCheackbox=document.createElement("input");
+        let contactPeopleNikename=document.createElement("span");
+        contactPeopleCheackbox.setAttribute("type","checkbox");
+        contactPeopleCheackbox.setAttribute("name","contact_people");
+        contactPeopleCheackbox.setAttribute("value",user[0]);
+        contactPeopleli.appendChild(contactPeopleCheackbox);
+        contactPeopleNikename.innerText=user[1];
+        contactPeopleli.appendChild(contactPeopleNikename)
+        contactPeopleUl.appendChild(contactPeopleli)
+    })
+      
+}
+const renderAcceptList=function(){
+
 }
 
 ipcRenderer.on("receive server data",(event,args)=>{
-   console.log(args)
+    //{userlist:,file:,nikename:}
+    let serverDataJSON=JSON.parse(args);
+    initUserlist(serverDataJSON.userlist);
+    renderAcceptList()
 })
 
 goTosystem();

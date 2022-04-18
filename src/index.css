@@ -61,6 +61,12 @@ input{
     overflow: visible;
     font-family: inherit;
 }
+input[type=checkbox] {
+    box-sizing: border-box;
+    padding: 0;
+    width: 16px;
+    height: 16px;
+}
 
 input:hover{
     border-color: #40a9ff;
@@ -136,6 +142,7 @@ a:hover{
     color: #1890ff;
     border-right: 3px solid #40a9ff;
 }
+
 
 #crypto_container,#dB_containner{
     display: none;

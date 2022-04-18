@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-21 16:28:06
- * @LastEditTime: 2022-04-16 16:05:51
+ * @LastEditTime: 2022-04-18 12:42:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\net\stream.ts
@@ -35,11 +35,12 @@ export const broadcast=function(data:{id:string,nikename:string,postlist:Array<s
     //广播用户列表
     else{
       users.forEach((user)=>{
-        let userlist:string[]=[];
+        let userlist:Array<string[]>=[];
         let index=users.findIndex((one)=>one.id===user.id);
         for(let i=0;i<users.length;++i){
             if(i!==index){
-            userlist.push(users[i].nikename)};
+            let usersection=[users[i].id,users[i].nikename]
+            userlist.push(usersection)};
         }
         if(userlist.length){
             let serverPostData=`{
