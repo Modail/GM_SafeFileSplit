@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-08 14:28:58
- * @LastEditTime: 2022-02-13 17:44:25
+ * @LastEditTime: 2022-04-19 17:30:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\index.ts
@@ -24,8 +24,8 @@ if (require('electron-squirrel-startup')) {
 const createWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
+    height: 650,
+    width: 1000,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation:false,

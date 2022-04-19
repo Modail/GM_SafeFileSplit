@@ -1,7 +1,10 @@
 *,body{
     padding: 0;
     margin: 0;
-    font-family: sans-serif;
+    color: #000000d9;
+    font-size: 14px;
+    font-family:Arial;
+    background: #fff;
 }
 
 button{
@@ -67,6 +70,7 @@ input[type=checkbox] {
     padding: 0;
     width: 16px;
     height: 16px;
+    margin-right: 2vw;
 }
 
 input:hover{
@@ -111,7 +115,6 @@ a:hover{
     color: #1890ff;
 }
 
-
 #container{
     box-sizing: border-box;
 }
@@ -132,10 +135,21 @@ a:hover{
     display: flex;
     height: 100vh;
 }
+
+#id_box{
+   height: 6vh;
+   line-height: 6vh;
+   text-align: center;
+}
+#nikename{
+   color: #40a9ff;
+}
+
 #main_menu{ 
     width: 20vw;
     display: flex;
     flex-direction: column;
+    border-right:1px solid #d9d9d9;
 }
 
 .menu_li_selected{
@@ -144,6 +158,23 @@ a:hover{
     border-right: 3px solid #40a9ff;
 }
 
+#contact_people{
+    height: 6vh;
+    line-height: 6vh;
+    text-align: center;
+    cursor: pointer;
+}
+
+#contact_people_checkbox{
+    display: none;
+}
+
+.checkbox_li{
+    height: 5vh;
+    line-height: 5vh;
+    padding-left: 4vw;
+    text-align: left;
+}
 
 #crypto_container,#dB_containner,#accept_list_container{
     display: none;
@@ -161,8 +192,11 @@ a:hover{
     width:40vw;
     height: 4vh;
     line-height: 4vh;
-    background-color: grey;
+    background-color:#1890ff;
     text-align: center;
+    color: #e6f7ff;
+    border:1px solid #1890ff;
+    border-radius: 5px 5px 0 0;
 }
  #encryptForm,#decryptForm{
     display: flex;
@@ -171,16 +205,47 @@ a:hover{
     align-items: center;
     width: 40vw;
     margin-bottom: 2vh;
-    background-color: lavender;
+    border: 1px solid #d9d9d9;
+    padding-bottom: 2vh;
 }
+
 #input_container{
-    width: 40vw;
+    width: 35vw;
     margin-top: 0.5vh;
 }
 
+#encryptFile,#priv_pem_file,#decryptFile{
+    display: none;
+}
+
+#encryptFile_btn,#priv_pem_file_btn,#decryptFile_btn{
+   margin-left: 3vw;
+   background-color: #fff;
+   border: 1px solid #d9d9d9;
+   color: #000000d9;
+}
+
+#encryptFile_btn:hover,#priv_pem_file_btn:hover,#decryptFile_btn:hover{
+    border: 1px solid #40a9ff;
+    color: #40a9ff;
+ }
+
+ #encryptFile_btn:hover svg,#priv_pem_file_btn:hover svg,#decryptFile_btn:hover svg{
+    fill: #40a9ff;
+ }
+
+
 #encrypt_btn,#decrypt-btn{
     margin-top: 1vh;
-    flex-grow:10;
+}
+
+#contact_placeholder{
+    width: 35vw;
+}
+
+.asterisk{
+    color: #1890ff;
+    margin-right: 1vw;
 }
 
 #message_placeholder{
@@ -196,6 +261,24 @@ a:hover{
     flex-direction: column;
     align-items: center;
 }
+
+#table_header{
+    width: 100%;
+    height: 5vh;
+    line-height: 5vh;
+    border-bottom:1px solid #d9d9d9;
+    text-align: center;
+}
+#table_empty_containner,#accept_empty_containner{
+   height: 100%;
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+
+
 .list_DB{
     display: flex;
     align-items: center;
@@ -217,29 +300,38 @@ a:hover{
 #accept_list_header{
     display: flex;
     width: 100%;
+    height: 5vh;
+    line-height: 5vh;
     flex-direction: row;
     border-bottom:1px solid #d9d9d9;
+    text-align: center;
     
 }
 .sender_label{
-    width: 10vw;
+    width: 15vw;
     border-right: 1px solid #d9d9d9;
 }
 .filename_label{
-    width: 50vw;
+    width: 40vw;
     border-right: 1px solid #d9d9d9;
+}
+.operation_label{
+    width: 25vw;
 }
 
 .accept_li{
     display: flex;
     flex-direction: row;
-    width: 100%;
 }
+
 .accept_li_sender{
-   width: 10vw;
+   width: 15vw;
 }
 
 .accept_li_filename{
-  width: 50vw;
+  width: 40vw;
 } 
 
+.accept_li_operation{
+    width: 25vw;
+}
