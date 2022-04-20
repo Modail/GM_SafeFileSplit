@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-19 22:07:24
+ * @LastEditTime: 2022-04-20 23:35:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
@@ -105,7 +105,6 @@ const click_decryptBtn =function(){
 }
 
 const renderList=function(){
-    //添加选项 render 哪个list
     let fileList =<HTMLElement>document.getElementById("table_conntianner");
     let tableEmptyContainner=<HTMLElement>document.getElementById("table_empty_containner");
     ipcRenderer.send("render list");
@@ -237,16 +236,16 @@ const initPage=function(){
     })
     //初始化联系人的显示切换
     let contactPeople=<HTMLElement>document.getElementById("contact_people");
+    let contactPeopleCheckbox=<HTMLElement>document.getElementById("contact_people_checkbox");
     contactPeople.addEventListener("click",()=>{
         //还缺少图标状态切换
-        let contactPeopleCheckbox=<HTMLElement>document.getElementById("contact_people_checkbox");
         if(contactPeopleCheckbox.style.display==="none"){
             contactPeopleCheckbox.style.display="block";
         }else{
             contactPeopleCheckbox.style.display="none";
         }
     })
-
+    contactPeople.click();//将属性变为内联属性切换
     //初始化session中的files数组;
     let filesJSON=new FilesJSON();
     sessionStorage.setItem("filesJSON",JSON.stringify(filesJSON));
@@ -256,7 +255,14 @@ const initPage=function(){
 }
 const initUserlist=function(userlist:string[][]){
     //userlist:[[user.id,user.nikename]];
+    let contactPeopleEmpty=document.getElementById("contact_people_empty");
     let contactPeopleUl=document.querySelector(".contact_people_ul");
+    if(!userlist.length){
+        //无在线人的状态
+        contactPeopleEmpty.style.display="flex";
+
+    }else{
+        contactPeopleEmpty.style.display="none";
         //先删除原有节点
         let nodes =contactPeopleUl.childNodes;
         if(nodes.length!==0){
@@ -277,6 +283,7 @@ const initUserlist=function(userlist:string[][]){
         contactPeopleli.appendChild(contactPeopleNikename)
         contactPeopleUl.appendChild(contactPeopleli)
     })
+    }
       
 }
 const renderAcceptList=function(file:(string|Buffer)[],senderName:string){

@@ -115,6 +115,7 @@ a:hover{
     color: #1890ff;
 }
 
+
 #container{
     box-sizing: border-box;
 }
@@ -141,6 +142,16 @@ a:hover{
    line-height: 6vh;
    text-align: center;
 }
+
+.id_icon{
+   margin-right: 1vw;
+}
+
+.icon_span{
+   position:absolute;
+   left:2vw;
+}
+
 #nikename{
    color: #40a9ff;
 }
@@ -158,15 +169,31 @@ a:hover{
     border-right: 3px solid #40a9ff;
 }
 
+.menu_li_selected span svg{
+   fill:#1890ff;
+}
+
 #contact_people{
     height: 6vh;
     line-height: 6vh;
     text-align: center;
+    border-bottom: 1px solid #d9d9d9;
     cursor: pointer;
 }
 
+
 #contact_people_checkbox{
     display: none;
+    margin-left:2vw ;
+    border-left: 1px solid #d9d9d9;
+}
+
+#contact_people_empty{
+    height: 50vh;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .checkbox_li{
