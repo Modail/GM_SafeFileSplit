@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-20 23:35:35
+ * @LastEditTime: 2022-04-21 17:10:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
@@ -237,15 +237,21 @@ const initPage=function(){
     //初始化联系人的显示切换
     let contactPeople=<HTMLElement>document.getElementById("contact_people");
     let contactPeopleCheckbox=<HTMLElement>document.getElementById("contact_people_checkbox");
+    let upIcon=document.getElementById("up_icon");
+    let downIcon=document.getElementById("down_icon")
     contactPeople.addEventListener("click",()=>{
-        //还缺少图标状态切换
+        //还缺少图标状态切换 youug
         if(contactPeopleCheckbox.style.display==="none"){
             contactPeopleCheckbox.style.display="block";
+            upIcon.style.display="none";
+            downIcon.style.display="inline-block";
         }else{
             contactPeopleCheckbox.style.display="none";
+            upIcon.style.display="inline-block";
+            downIcon.style.display="none";   
+        
         }
     })
-    contactPeople.click();//将属性变为内联属性切换
     //初始化session中的files数组;
     let filesJSON=new FilesJSON();
     sessionStorage.setItem("filesJSON",JSON.stringify(filesJSON));

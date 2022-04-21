@@ -5,6 +5,10 @@
     font-size: 14px;
     font-family:Arial;
     background: #fff;
+    user-select: none;
+}
+body svg{
+    vertical-align: middle;
 }
 
 button{
@@ -137,6 +141,7 @@ a:hover{
     height: 100vh;
 }
 
+
 #id_box{
    height: 6vh;
    line-height: 6vh;
@@ -150,6 +155,7 @@ a:hover{
 .icon_span{
    position:absolute;
    left:2vw;
+   vertical-align:center;
 }
 
 #nikename{
@@ -181,9 +187,17 @@ a:hover{
     cursor: pointer;
 }
 
+#up_icon{
+    position: absolute;
+    left:17vw;
+}
+
+#down_icon{
+    position: absolute;
+    left:17vw;
+}
 
 #contact_people_checkbox{
-    display: none;
     margin-left:2vw ;
     border-left: 1px solid #d9d9d9;
 }
