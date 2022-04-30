@@ -1,12 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2022-03-28 16:01:43
- * @LastEditTime: 2022-04-18 23:13:43
+ * @LastEditTime: 2022-04-30 22:09:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\main\runClient.ts
  */
-import { ipcMain,BrowserWindow} from "electron";
+import { ipcMain,BrowserWindow, dialog} from "electron";
 import * as fs from "fs";
 import * as path from "path";
 import { createConnection } from "../../net/net";
@@ -20,7 +20,6 @@ export function RunClient(mainWindow:BrowserWindow){
        const DB=new levelDB();
        //连接局域网内的所有在线软件
        let clientWebsocket:any;
-       let redata:string;
        ipcMain.on("client start",(event,...args)=>{
               // let ip_prefix=getIPAddress().split(".",3).join(".");
               // for(let i=1;i<=255;i++){
@@ -104,6 +103,22 @@ export function RunClient(mainWindow:BrowserWindow){
                event.reply("decrypt ok","decrypt ok");  
             }
           })
+       //初始化数据库密码
+       ipcMain.on("set password",(event,args)=>{
+         DB.addData("password",args)
+       })
+       //获取数据库密码，进行验证
+       ipcMain.on("get password",(event)=>{
+         DB.getData("password").then((data)=>{
+           event.reply("password data",data.toString())
+         }).catch((err)=>{
+           event.reply("password data","")
+         })
+       })
+       //数据库密码错误处理
+       ipcMain.on("password err",()=>{
+         dialog.showErrorBox("数据库密码错误","密码错误，请重新输入！")
+       })
        //获取数据库信息，渲染页面
        //可能需要异步
       ipcMain.once("init page",(event)=>{
@@ -111,7 +126,10 @@ export function RunClient(mainWindow:BrowserWindow){
       })
       ipcMain.on("render list",(event)=>{
         const DBlist=DB.getKey();
-        DBlist.then((data)=>event.reply("fresh data",data))
+        DBlist.then((data)=>{
+          DB.db.close();
+          event.reply("fresh data",data)
+        })
        })
        //对数据库信息进行操作
       ipcMain.on("delete file",(event,args)=>{
@@ -120,6 +138,7 @@ export function RunClient(mainWindow:BrowserWindow){
       })
       ipcMain.on("download file",(event,args)=>{
         DB.getData(args).then((data)=>{
+          DB.db.close();
           event.reply("download ready",data,args);
         })
       })

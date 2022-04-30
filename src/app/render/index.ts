@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-21 17:10:18
+ * @LastEditTime: 2022-04-30 22:08:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
@@ -117,7 +117,6 @@ const renderList=function(){
              }      
         }
         if(args.length===0){
-            console.log("1")
                 tableEmptyContainner.style.display="flex";
         }else{
                  tableEmptyContainner.style.display="none";
@@ -296,7 +295,6 @@ const renderAcceptList=function(file:(string|Buffer)[],senderName:string){
       let fileName=file[0];
       let fileBuffer=file[1];
       let filesJSON=JSON.parse(sessionStorage.getItem("filesJSON"));
-      console.log(filesJSON)
       //将数据存储到session中
       if(fileName!==''&&fileBuffer!==''){
         filesJSON.filename.push(fileName);
@@ -344,7 +342,6 @@ const renderAcceptList=function(file:(string|Buffer)[],senderName:string){
                   filesJSON.sender.splice(i,1);
                   filesJSON.filename.splice(i,1);
                   filesJSON.filedata.splice(i,1);
-                  console.log(filesJSON)
                   sessionStorage.setItem("filesJSON",JSON.stringify(filesJSON));
                   renderAcceptList(["",""],"");
               }
@@ -368,7 +365,6 @@ const renderAcceptList=function(file:(string|Buffer)[],senderName:string){
 ipcRenderer.on("receive server data",(event,args)=>{
     //{userlist:,file:,nikename:}
     let serverDataJSON=JSON.parse(args);
-    console.log(serverDataJSON)
     if(serverDataJSON.userlist.length){
         initUserlist(serverDataJSON.userlist);
     }
@@ -382,6 +378,34 @@ ipcRenderer.on("receive server data",(event,args)=>{
     }
 })
 
+//需要添加一个数据库密码验证页面
+const checkDBpw=function(){
+    let dbPwInput=<HTMLInputElement> document.getElementById("db_pw_input");
+    let dbPwPage=<HTMLElement>document.getElementById("db_pass_page");
+    let dbDataPage=<HTMLElement>document.getElementById("db_data_page");
+    let dbPwBtn=<HTMLButtonElement>document.getElementById("db_pw_btn");
+    dbPwBtn.addEventListener("click",()=>{
+        ipcRenderer.send("get password");
+        ipcRenderer.once("password data",(event,args)=>{
+           let pwValue=dbPwInput.value;
+           if(args.length===0){
+              ipcRenderer.send("set password",pwValue);
+              dbPwPage.style.display="none";
+              dbDataPage.style.display="block";
+           }else{
+              if(pwValue===args){
+                  //进入数据库主页
+                  dbPwPage.style.display="none";
+                  dbDataPage.style.display="block";
+              }else{
+                  //使用alert会导致input失去焦点
+                  ipcRenderer.send("password err");
+              }
+           }
+        })   
+    })
+}
+checkDBpw()
 goTosystem();
 initPage();
 click_encryptBtn();

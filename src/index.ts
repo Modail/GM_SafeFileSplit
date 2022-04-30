@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-08 14:28:58
- * @LastEditTime: 2022-04-19 17:30:40
+ * @LastEditTime: 2022-04-28 21:09:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\index.ts
@@ -23,7 +23,7 @@ if (require('electron-squirrel-startup')) {
 
 const createWindow = (): void => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+    const mainWindow = new BrowserWindow({
     height: 650,
     width: 1000,
     webPreferences: {
@@ -65,3 +65,9 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+//防止应用多开
+// const gotTheLock = app.requestSingleInstanceLock()
+// if (!gotTheLock) {
+//   app.quit()
+// } 
