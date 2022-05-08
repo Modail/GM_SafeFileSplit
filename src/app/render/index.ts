@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-04-30 22:08:50
+ * @LastEditTime: 2022-05-08 14:16:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
@@ -63,6 +63,7 @@ const getSelectUers=function(){
     }
     return postlist;
 }
+
 const click_encryptBtn =function(){
     let message_placeholder=<HTMLElement>document.getElementById("message_placeholder");
     let btn =<HTMLButtonElement>document.getElementById("encrypt_btn");
@@ -221,17 +222,39 @@ const initPage=function(){
     let encryptFileBtn=<HTMLButtonElement>document.getElementById("encryptFile_btn");
     let decryptFileBtn=<HTMLButtonElement>document.getElementById("decryptFile_btn");
     let priv_pem_fileBtn=<HTMLButtonElement>document.getElementById("priv_pem_file_btn");
+    let selectFile=<HTMLElement>document.getElementById("selected_file");
+    let selectFiles=<HTMLElement>document.getElementById("selected_files");
+    let pemFile=<HTMLElement>document.getElementById("pem_file");
     encryptFileBtn.addEventListener("click",()=>{
         let encryptFile=<HTMLInputElement>document.getElementById("encryptFile");
         encryptFile.click();
+        encryptFile.addEventListener("change",()=>{
+            if(encryptFile.files.length!==0){
+                selectFile.innerText=`已选择文件:${encryptFile.files[0].path.split("\\")[encryptFile.files[0].path.split("\\").length-1]}`;
+            }
+          })
     })
     decryptFileBtn.addEventListener("click",()=>{
         let decryptFile=<HTMLInputElement>document.getElementById("decryptFile");
         decryptFile.click();
+        decryptFile.addEventListener("change",()=>{
+          if(decryptFile.files.length!==0){
+              let files=[];
+              for(let i=0; i<decryptFile.files.length;i++){
+                  files.push(decryptFile.files[i].path.split("\\")[decryptFile.files[i].path.split("\\").length-1])
+              }
+            selectFiles.innerText=`已选择文件:${files.join(",")}`;
+          }
+        })
     })
     priv_pem_fileBtn.addEventListener("click",()=>{
         let priv_pem_file=<HTMLInputElement>document.getElementById("priv_pem_file");
         priv_pem_file.click();
+        priv_pem_file.addEventListener("change",()=>{
+            if( priv_pem_file.files.length!==0){
+                pemFile.innerText=`已选择文件:${priv_pem_file.files[0].path.split("\\")[priv_pem_file.files[0].path.split("\\").length-1]}`;
+            }
+        })
     })
     //初始化联系人的显示切换
     let contactPeople=<HTMLElement>document.getElementById("contact_people");

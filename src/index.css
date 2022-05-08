@@ -200,6 +200,17 @@ a:hover{
 #contact_people_checkbox{
     margin-left:2vw ;
     border-left: 1px solid #d9d9d9;
+    overflow-y: scroll;
+}
+
+#contact_people_checkbox::-webkit-scrollbar{
+    width: 4px;
+    height: 1px;
+}
+
+#contact_people_checkbox::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    background-color: #40a9ff;
 }
 
 #contact_people_empty{
@@ -248,6 +259,14 @@ a:hover{
     margin-bottom: 2vh;
     border: 1px solid #d9d9d9;
     padding-bottom: 2vh;
+}
+
+#selected_files,#selected_file,#pem_file{
+    color:#40a9ff;
+    width: 35vw;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #input_container{
