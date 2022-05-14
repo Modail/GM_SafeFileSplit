@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-02-12 14:24:18
- * @LastEditTime: 2022-05-08 14:16:59
+ * @LastEditTime: 2022-05-14 21:21:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\render\index.ts
@@ -24,7 +24,9 @@ const getFormValue=function(type:string):Array<Array<string>|string|number>{
             values.push(targetElements[i].files[0].path)
           }
           else{
-            values.push(targetElements[i].valueAsNumber);
+            if(targetElements[i].value.length){
+                values.push(targetElements[i].valueAsNumber);
+            }
           }
         }
     }
@@ -46,7 +48,9 @@ const getFormValue=function(type:string):Array<Array<string>|string|number>{
 
           }
           else{
-            values.push(targetElements[i].value);
+              if(targetElements[i].value.length){
+                values.push(targetElements[i].value);
+              }
           }
         }
     }
@@ -84,6 +88,11 @@ const click_encryptBtn =function(){
         //DB.getKey()返回一个promise;
         setTimeout(()=>renderList(),100);
     })
+    ipcRenderer.on("encrypt and split ok",(event,args)=>{
+        message_placeholder.innerHTML=`<span>提示信息:${args}</span>`;
+        //DB.getKey()返回一个promise;
+        setTimeout(()=>renderList(),100);
+    })
     ipcRenderer.on("encrypt error",(event,args)=>{
         message_placeholder.innerHTML=`<span>提示信息:${args}</span>`;
      })
@@ -98,6 +107,9 @@ const click_decryptBtn =function(){
         ipcRenderer.send("click to decrypt",...encrypt_args);
     })
     ipcRenderer.on("decrypt ok",(event,args)=>{
+        message_placeholder.innerHTML=`<span>提示信息:${args}</span>`;
+    })
+    ipcRenderer.on("decrypt and recovery ok",(event,args)=>{
         message_placeholder.innerHTML=`<span>提示信息:${args}</span>`;
     })
     ipcRenderer.on("decrypt error",(event,args)=>{
@@ -202,6 +214,12 @@ const goTosystem=function(){
             ipcRenderer.send("client start",id,nikename);
           } 
         })
+        //添加enter 快捷键
+        document.addEventListener("keydown",(event)=>{
+            if(event.code==='Enter'){
+                registerBtn.click()
+            }
+            })
 }
 const initPage=function(){
     //初始化导航栏的li切换

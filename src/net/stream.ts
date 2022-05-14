@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-21 16:28:06
- * @LastEditTime: 2022-04-18 22:28:31
+ * @LastEditTime: 2022-05-14 21:21:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\net\stream.ts
@@ -32,7 +32,6 @@ export const broadcast=function(data:{id:string,nikename:string,postlist:Array<s
             serverDataJSON.userlist=[];
             serverDataJSON.file=data.files[index];
             serverDataJSON.nikename=data.nikename;
-            console.log(serverDataJSON)
             user.socket.send(JSON.stringify(serverDataJSON));
           }       
         }

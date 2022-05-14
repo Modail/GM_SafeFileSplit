@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-28 16:01:43
- * @LastEditTime: 2022-04-30 22:09:42
+ * @LastEditTime: 2022-05-14 21:20:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\app\main\runClient.ts
@@ -44,63 +44,74 @@ export function RunClient(mainWindow:BrowserWindow){
               let clientdataJSON=new ClientDataJSON();
               let files=[];
               let filesection;
-              if(args[1]>=args[2]){
-                event.reply("encrypt error","encrypt error");
-                return;
-              }
-              else{
+              if(args.length===1){
                 file.to_encrypt_file();
-                file.to_split_file(args[1],args[2]);
-                //添加 存储数据库、发送信息等步骤
-                for(let i =0;i<args[2];i++){
-                  let datapath=file.paths;
-                  if(i<=9){
-                    datapath=datapath+`.00${i}`;
-                    DB.addData(path.basename(datapath),fs.readFileSync(datapath));
-                    if(args.length>3){
-                      filesection=[path.basename(datapath),fs.readFileSync(datapath)];
-                      files.push(filesection);
-                    }
-                  }
-                  else if(i>9&&i<=99){
-                    datapath=datapath+`.0${i}`;
-                    DB.addData(path.basename(datapath),fs.readFileSync(datapath));
-                    if(args.length>3){
-                      filesection=[path.basename(datapath),fs.readFileSync(datapath)];
-                      files.push(filesection);
-                    }
-                  }
-                  else {
-                    datapath=datapath+`.${i}`;
-                    DB.addData(path.basename(datapath),fs.readFileSync(datapath));
-                    if(args.length>3){
-                      filesection=[path.basename(datapath),fs.readFileSync(datapath)];
-                      files.push(filesection);
-                    }
-                  }
-                }
-                if(args.length>3){
-                  clientdataJSON.files=files;
-                  clientdataJSON.postlist=args[5];
-                  clientdataJSON.id=args[4];
-                  clientdataJSON.nikename=args[3];
-                  clientWebsocket.send(JSON.stringify(clientdataJSON)); 
-               }
+                DB.addData(path.basename(file.paths),fs.readFileSync(file.paths));
                 event.reply("encrypt ok","encrypt ok");  
               }
+              else{
+                if(args[1]>=args[2]){
+                  event.reply("encrypt error","encrypt error");
+                  return;
+                }
+                else{
+                  file.to_encrypt_file();
+                  file.to_split_file(args[1],args[2]);
+                  //添加 存储数据库、发送信息等步骤
+                  for(let i =0;i<args[2];i++){
+                    let datapath=file.paths;
+                    if(i<=9){
+                      datapath=datapath+`.00${i}`;
+                      DB.addData(path.basename(datapath),fs.readFileSync(datapath));
+                      if(args.length>3){
+                        filesection=[path.basename(datapath),fs.readFileSync(datapath)];
+                        files.push(filesection);
+                      }
+                    }
+                    else if(i>9&&i<=99){
+                      datapath=datapath+`.0${i}`;
+                      DB.addData(path.basename(datapath),fs.readFileSync(datapath));
+                      if(args.length>3){
+                        filesection=[path.basename(datapath),fs.readFileSync(datapath)];
+                        files.push(filesection);
+                      }
+                    }
+                    else {
+                      datapath=datapath+`.${i}`;
+                      DB.addData(path.basename(datapath),fs.readFileSync(datapath));
+                      if(args.length>3){
+                        filesection=[path.basename(datapath),fs.readFileSync(datapath)];
+                        files.push(filesection);
+                      }
+                    }
+                  }
+                  if(args.length>3){
+                    clientdataJSON.files=files;
+                    clientdataJSON.postlist=args[5];
+                    clientdataJSON.id=args[4];
+                    clientdataJSON.nikename=args[3];
+                    clientWebsocket.send(JSON.stringify(clientdataJSON)); 
+                 }
+                  event.reply("encrypt and split ok","encrypt and split ok");  
+                }
+              } 
             })
       ipcMain.on("click to decrypt",(event,...args)=>{
             let [files,priv_pem_path,threshold,recovery_name]=args;
             let file= new Files(files[0]);
-            if(files.length<threshold){
-              event.reply("decrypt error","decrypt error");
-                return;
-            }
-            else{
-               file.to_recovery_file(threshold,recovery_name,files);
-               
-                file.to_decrypt_file(recovery_name,priv_pem_path);
-               event.reply("decrypt ok","decrypt ok");  
+            if(args.length===2){
+              file.to_decrypt_file(priv_pem_path);
+              event.reply("decrypt ok","decrypt ok"); 
+            }else{
+              if(files.length<threshold){
+                event.reply("decrypt error","decrypt error");
+                  return;
+              }
+              else{
+                 file.to_recovery_file(threshold,recovery_name,files);
+                 file.to_decrypt_file(priv_pem_path,recovery_name);
+                 event.reply("decrypt and recovery ok","decrypt and recovery ok");  
+              }
             }
           })
        //初始化数据库密码
@@ -127,8 +138,7 @@ export function RunClient(mainWindow:BrowserWindow){
       ipcMain.on("render list",(event)=>{
         const DBlist=DB.getKey();
         DBlist.then((data)=>{
-          DB.db.close();
-          event.reply("fresh data",data)
+          event.reply("fresh data",data);
         })
        })
        //对数据库信息进行操作
@@ -138,7 +148,6 @@ export function RunClient(mainWindow:BrowserWindow){
       })
       ipcMain.on("download file",(event,args)=>{
         DB.getData(args).then((data)=>{
-          DB.db.close();
           event.reply("download ready",data,args);
         })
       })

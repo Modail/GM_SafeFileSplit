@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-01-05 10:42:27
- * @LastEditTime: 2022-04-09 16:27:40
+ * @LastEditTime: 2022-05-14 20:37:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\base\file.ts
@@ -28,9 +28,14 @@ export default class  Files {
         write_key_pem(this.key_pair.priv_key_str,(path.dirname(this.paths)+"/"+`${path.basename(this.paths)}_private.pem`).replace(/\\/gi,"/"));
         
     }
-    to_decrypt_file=(recovery_name:string,pem_path:string)=>{
+    to_decrypt_file=(pem_path:string,recovery_name?:string)=>{
         this.key_pair.priv_key_str=get_key_pem(pem_path);
-        Decrypt_KEYMGMT_SM2((path.dirname(this.paths)+"/"+recovery_name).replace(/\\/gi,"/"),this.key_pair.priv_key_str);
+        if(recovery_name){
+            Decrypt_KEYMGMT_SM2((path.dirname(this.paths)+"/"+recovery_name).replace(/\\/gi,"/"),this.key_pair.priv_key_str);
+        }
+        else{
+            Decrypt_KEYMGMT_SM2(this.paths.replace(/\\/gi,"/"),this.key_pair.priv_key_str);
+        }
     }
     to_split_file =(threshold:number,nshares:number)=>{
         SecretShareFile(threshold,nshares,(path.dirname(this.paths)+"/"+path.basename(this.paths)).replace(/\\/gi,"/"));

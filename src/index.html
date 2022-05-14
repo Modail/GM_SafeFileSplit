@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-02-08 14:28:58
- * @LastEditTime: 2022-05-08 14:17:10
+ * @LastEditTime: 2022-05-14 20:56:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \GM_SafeFileSplit\src\index.html
@@ -59,7 +59,7 @@
                     <form id ="encryptForm">
                             <div id="input_container">
                                 <span>请选择待加密文件:</span>
-                                <input  id="encryptFile" type="file" >
+                                <input  id="encryptFile" type="file">
                                 <button id="encryptFile_btn" type="button">
                                     <svg viewBox="64 64 896 896" focusable="false" data-icon="upload" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M400 317.7h73.9V656c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V317.7H624c6.7 0 10.4-7.7 6.3-12.9L518.3 163a8 8 0 00-12.6 0l-112 141.7c-4.1 5.3-.4 13 6.3 13zM878 626h-60c-4.4 0-8 3.6-8 8v154H214V634c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v198c0 17.7 14.3 32 32 32h684c17.7 0 32-14.3 32-32V634c0-4.4-3.6-8-8-8z"></path></svg>
                                     click to select file</button>
@@ -67,13 +67,13 @@
                             <div id="selected_file">暂未选择文件</div>       
                             <div id="input_container">
                                 <span>请输入文件门限数:</span>
-                                <input id="threshold" type="number">
+                                <input id="threshold" type="number" placeholder="未输入时仅加密文件">
                             </div>
                             <div id="input_container">
                                 <span>请输入文件分割数:</span>
-                                <input id="nshares"type="number">
+                                <input id="nshares"type="number" placeholder="未输入时仅加密文件">
                             </div>
-                            <div id="contact_placeholder"><span class="asterisk">*</span>在左侧选择在线联系人可发送加密后文件</div>
+                            <div id="contact_placeholder"><span class="asterisk">*</span>在左侧选择在线联系人可发送加密分割后的文件,仅加密无法使用该功能</div>
                             <button id="encrypt_btn" type="button" >加密</button>    
                     </form>
                     <div id="menu">解密恢复</div>
@@ -98,11 +98,11 @@
                             <div id="pem_file">暂未选择文件</div>
                             <div id="input_container">
                                 <span>输入设置的门限数:</span>
-                                <input id ="nshares" type="number">
+                                <input id ="nshares" type="number" placeholder="未输入时仅解密文件">
                             </div> 
                             <div id="input_container">
                                 <span>输入恢复后文件名:</span>
-                                <input id ="decryptFiles" type="text">
+                                <input id ="decryptFiles" type="text" placeholder="未输入时仅解密文件">
                             </div>
                             <button  id="decrypt-btn" type="button" >恢复</button>
                     </form>
